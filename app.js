@@ -1,5 +1,5 @@
 const express = require('express');
-const puppeteer = require('puppeteer-core');
+const puppeteer = require('puppeteer');
 const app = express();
 const port = 4000;
 
@@ -8,7 +8,7 @@ app.get('/price', async (req, res) => {
     const models = ["BQ4422-161", "CZ0790-003"];
 
     const browser = await puppeteer.launch({
-        executablePath: "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+        // executablePath: "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
         headless: false
     });
 
