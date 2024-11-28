@@ -28,6 +28,7 @@ app.get('/price', async (req, res) => {
 
         const kreamUrl = "https://kream.co.kr/search?keyword=" + model;
         await page.goto(kreamUrl);
+        console.log(await page.evaluate('navigator.userAgent'));
 
         const kreamPriceSelector = "#__layout > div > div.layout__main.search-container > div.content-container > div.content > div > div.shop-content > div > div.search_result.md > div.search_result_list > div > div > a > div.price.price_area > p.amount";
         
