@@ -5,10 +5,43 @@ const port = 4000;
 
 app.get('/price', async (req, res) => {
 
-    const models = ["BQ4422-161", "CZ0790-003"];
+    
+
+    const models = ["BQ4422-161",
+        "CZ0790-003",
+        "CZ0790-003",
+        "CW2289-111",
+        "FQ8138-103",
+        "554724-092",
+        "FQ1457-002",
+        "FN8002-900",
+        "CT8532-106",
+        "DJ5982-601",
+        "FQ7940-600",
+        "FQ8213-103",
+        "DM0967-106",
+        "HF4319-741",
+        "FB9928-200",
+        "HJ7743-010",
+        "DD8959-103",
+        "CT2302-002",
+        "DV6840-002",
+        "FZ8753-900",
+        "CZ5594-001",
+        "DC0774-101",
+        "FJ9488-400",
+        "FJ1567-001",
+        "845053-201",
+        "HM0987-200",
+        "FZ1517-600",
+        "DO9404-400",
+        "DD1391-100",
+        "DD1391-103",
+        "DA1469-200",
+        "FV5926-200"]
 
     const browser = await puppeteer.launch({
-        headless: false,
+        headless: true,
         args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
 
@@ -22,8 +55,8 @@ app.get('/price', async (req, res) => {
         const price = {
             model: "",
             name: "",
-            kream: 1,
-            nike: 1
+            kream: 0,
+            nike: 0
         };
 
         const kreamUrl = "https://kream.co.kr/search?keyword=" + model;
@@ -33,7 +66,7 @@ app.get('/price', async (req, res) => {
         
         try {
 
-            await page.waitForSelector(kreamPriceSelector, { timeout: 5000 });
+            await page.waitForSelector(kreamPriceSelector, { timeout: 3000 });
             const kreamPriceData = await page.$eval(
                 kreamPriceSelector, element => {
                     return element.textContent;
@@ -47,11 +80,12 @@ app.get('/price', async (req, res) => {
         try {
 
             const kreamNameSelector = "#__layout > div > div.layout__main.search-container > div.content-container > div.content > div > div.shop-content > div > div.search_result.md > div.search_result_list > div > div > a > div.product_info_area > div.title > div > p.translated_name";
-            await page.waitForSelector(kreamNameSelector, { timeout: 5000 });
+            await page.waitForSelector(kreamNameSelector, { timeout: 3000 });
+            
             const kreamNameData = await page.$eval(
                 kreamNameSelector, element => {
                     return element.textContent;
-                });
+            });
 
             price.name = kreamNameData;
 
@@ -69,13 +103,12 @@ app.get('/price', async (req, res) => {
 
         try {
             const nikeSelector = "#skip-to-products > div > div > figure > div > div.product-card__animation_wrapper > div > div > div > div";
-            await page.waitForSelector(nikeSelector);
+            await page.waitForSelector(nikeSelector, { timeout: 3000 });
             const nikeData = await page.$eval(
                 nikeSelector, element => {
 
                     return element.textContent;
                 });
-
             price.nike = commaString2Int(nikeData?.split(' ').join('').slice(0, -1));
 
         } catch (error) {
